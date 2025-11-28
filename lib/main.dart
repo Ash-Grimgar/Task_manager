@@ -1,11 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:wind_main/firebase_options.dart';
 import 'package:wind_main/src/constants/colors.dart';
-import 'package:wind_main/src/features/authentication/screens/profile/profile_screen.dart';
-import 'package:wind_main/src/features/authentication/screens/splash_screen/splash_screen.dart';
 import 'package:wind_main/src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'package:wind_main/src/repository/authentication_repository/authentication_repository.dart';
 
@@ -26,6 +24,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return GetMaterialApp(
       theme: ThemeData(
         brightness: Brightness.light,

@@ -18,4 +18,4 @@ const String tGoogleLogoImage  = "assets/logo/icons8-google-logo-100.png";
 const String tForgetPasswordImage = "assets/images/forget_password/question-100.png";
 
 // PROFILE IMAGES
-const  String tProfileImage = "assets/images/profile/default profile image.jpeg";
+const  String tProfileImage = "assets/images/splash_images/open-doodles (1) black/png/LayingDoodle.png";

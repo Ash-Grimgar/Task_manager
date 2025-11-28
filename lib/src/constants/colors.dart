@@ -32,3 +32,25 @@ const Color tDarkBgColor       = Color(0xFF1B1B1B); // soft charcoal
 const Color tOnboardingPage1Color = Color(0xFFF7F6F1);
 const Color tOnboardingPage2Color = Color(0xFFFDDCDF);
 const Color tOnboardingPage3Color = Color(0xFFFDDCBD);
+
+
+
+
+
+
+// Home page colors
+
+const Color kYellowLight = Color(0xFFFFF7EC);
+const Color kYellow = Color(0xFFFAF0DA);
+const Color kYellowDark = Color(0xFFEBBB7F);
+
+const Color kRedLight = Color(0xFFFCF0F0);
+const Color kRed = Color(0xFFF8D7D7);
+const Color kRedDark = Color(0xFFE57373);
+
+const Color kBlueLight = Color(0xFFEDF4FE);
+const Color kBlue = Color(0xFFD6E4FE);
+const Color kBlueDark = Color(0xFF7F9CF5);
+
+
+

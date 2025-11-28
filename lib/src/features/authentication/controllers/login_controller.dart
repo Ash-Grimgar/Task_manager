@@ -14,14 +14,12 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  GlobalKey<FormState>loginFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   // Function to toggle password visibility
   void togglePasswordVisibility() {
     isPasswordObscured.value = !isPasswordObscured.value;
   }
-
-
 
   // A method to get the trimmed email value
   String get trimmedEmail => emailController.text.trim();
@@ -36,29 +34,29 @@ class LoginController extends GetxController {
     passwordController.dispose();
     super.onClose();
   }
-/// Loader
+
+  /// Loader
   final isLoading = false.obs;
   final isGoogleLoading = false.obs;
 
   /// Email and Password login
-    Future<void> Login() async {
-      try {
-        isLoading.value = true;
-        if (!loginFormKey.currentState!.validate()){
-          isLoading.value=false;
-          return;
-        }
-        final auth = AuthenticationRepository.instance;
-        await auth.loginWithEmailAndPassword(emailController.text.trim(), passwordController.text.trim());
-
-        Get.offAll(DoodleTaskManagerApp());
-
-        }
-        catch(e){
-          isLoading.value = false;
-          Helper.errorSnackBar(title: tOhSnap, message: e.toString());
-        }
+  Future<void> Login() async {
+    try {
+      isLoading.value = true;
+      if (!loginFormKey.currentState!.validate()) {
+        isLoading.value = false;
+        return;
       }
+      final auth = AuthenticationRepository.instance;
+      await auth.loginWithEmailAndPassword(
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
+
+      Get.offAll(DoodleTaskManagerApp());
+    } catch (e) {
+      isLoading.value = false;
+      Helper.errorSnackBar(title: tOhSnap, message: e.toString());
     }
-
-
+  }
+}
