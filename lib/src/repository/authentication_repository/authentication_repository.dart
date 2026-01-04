@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:wind_main/src/exceptions/t_exceptions.dart';
-import 'package:wind_main/src/features/authentication/screens/application/home_screen.dart';
+import 'package:wind_main/src/features/authentication/screens/application/home_screen_relations/taskbar_homepage/homepage.dart';
 import 'package:wind_main/src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'package:wind_main/src/repository/authentication_repository/exceptions/signup_email_password_failure.dart';
 
@@ -23,7 +23,7 @@ class AuthenticationRepository extends GetxController {
   }
 
   setInitialScreen(User? user) {
-    user == null ? Get.offAll(() => const WelcomeScreen()) : user.emailVerified ? Get.offAll(() => const DoodleTaskManagerApp()) : Get.offAll(() => const MailVerification());
+    user == null ? Get.offAll(() => const WelcomeScreen()) : user.emailVerified ? Get.offAll(() => const Homepage()) : Get.offAll(() => const MailVerification());
   }
 
   Future<void> phoneAuthentication(String phoneNo) async {
@@ -64,7 +64,7 @@ class AuthenticationRepository extends GetxController {
           email: email, password: password);
       final user = _auth.currentUser;
       if (user != null) {
-        Get.offAll(() => const DoodleTaskManagerApp());
+        Get.offAll(() => const Homepage());
       }
       else {
         Get.offAll(() => const WelcomeScreen());

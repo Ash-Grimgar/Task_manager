@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class AboutWidget extends StatelessWidget {
   const AboutWidget({super.key});
 
@@ -18,9 +17,16 @@ class AboutWidget extends StatelessWidget {
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Container(
-                child: Icon(Icons.star,color: Colors.white,size: 20,),
-              )],
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[800],
+                    shape: BoxShape.circle,
+                  ),
+                  padding: EdgeInsets.all(5),
+                  child: Icon(Icons.star, color: Colors.white, size: 20),
+                ),
+              ],
             ),
           ),
         ],

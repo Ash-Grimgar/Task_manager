@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wind_main/src/constants/text-strings.dart';
 import 'package:wind_main/src/features/authentication/controllers/email_verification_%20controller.dart';
+import 'package:wind_main/src/features/authentication/screens/application/home_screen_relations/taskbar_homepage/homepage.dart';
 import 'package:wind_main/src/repository/authentication_repository/authentication_repository.dart';
 
-import '../screens/application/home_screen.dart';
 
 class LoginController extends GetxController {
   // Variable to hold password visibility state
@@ -53,7 +53,7 @@ class LoginController extends GetxController {
         passwordController.text.trim(),
       );
 
-      Get.offAll(DoodleTaskManagerApp());
+      Get.offAll(Homepage());
     } catch (e) {
       isLoading.value = false;
       Helper.errorSnackBar(title: tOhSnap, message: e.toString());

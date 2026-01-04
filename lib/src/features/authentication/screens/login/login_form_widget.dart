@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wind_main/src/features/authentication/controllers/login_controller.dart';
-import 'package:wind_main/src/features/authentication/screens/application/home_screen.dart';
 import 'package:wind_main/src/features/authentication/screens/forget_password/forget_password_options/forget_password-model_bottom_sheet.dart';
 
 import '../../../../constants/sizes.dart';

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 const Color tPrimaryColor      = Color(0xFFD4AF37); // deep elegant gold
 
 // Main dark text / icons
-const Color tSecondaryColor    = Color(0xFF1A1A1A); // charcoal black
+const Color tSecondaryColor    = Color(0xFF111827); // charcoal black
 
 // Accent for light mode (brighter gold)
 const Color tAccentColorLight  = Color(0xFFFFD700); // royal bright gold
@@ -22,10 +22,10 @@ const Color tCardBgColor       = Color(0xFFF8F5EC); // soft warm ivory
 const Color tWhiteColor        = Color(0xFFFFFFFF);
 
 // Dark text or surfaces
-const Color tDarkColor         = Color(0xFF121212);
+const Color tDarkColor         = Color(0xFF111827);
 
 // Dark theme main background
-const Color tDarkBgColor       = Color(0xFF1B1B1B); // soft charcoal
+const Color tDarkBgColor       = Color(0xFF111827); // soft charcoal
 
 
 // Onboarding backgrounds (pastel/light accents)
