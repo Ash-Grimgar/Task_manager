@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wind_main/src/features/authentication/screens/application/home_screen_relations/taskbar_homepage/task_list.dart';
-
+import 'package:wind_main/src/features/authentication/screens/application/home_screen_relations/taskbar_homepage/task_list_item.dart';
 import '../../../../../../utils/task_enum.dart';
 import '../../../../models/task_model.dart';
 import 'header.dart';
@@ -15,9 +14,9 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  // ✅ REQUIRED: filter state lives here
   TaskFilter selectedFilter = TaskFilter.today;
-  List<Task> todayTasks = [
+
+  final List<Task> todayTasks = [
     Task(
       id: '1',
       title: 'Build task homepage',
@@ -32,50 +31,94 @@ class _HomepageState extends State<Homepage> {
     ),
   ];
 
-  // 2. HANDLE COMPLETION
   void completeTask(Task task) {
     setState(() {
-      todayTasks.remove(task);
+      task.isCompleted = true;
+      task.completedAt = DateTime.now();
     });
   }
 
   List<Task> get visibleTasks {
-    switch (selectedFilter) {
-      case TaskFilter.today:
-        return todayTasks.where((t) => t.isToday).toList();
-      case TaskFilter.upcoming:
-        return todayTasks.where((t) => t.isUpcoming).toList();
-      case TaskFilter.overdue:
-        return todayTasks.where((t) => t.isOverdue).toList();
-    }
+    final now = DateTime.now();
+
+    return todayTasks.where((task) {
+      if (task.isCompleted) return false;
+
+      switch (selectedFilter) {
+        case TaskFilter.today:
+          return task.isToday;
+        case TaskFilter.upcoming:
+          return task.isUpcoming;
+        case TaskFilter.overdue:
+          return task.isOverdue;
+      }
+   return false;
+    }).toList();
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  const Color(0xFF0F172A),
+      backgroundColor: const Color(0xFF0F172A),
       body: SafeArea(
-        child: Column(
-          children: [
-            TaskHeader(),
-            const SizedBox(height: 40),
-            TodaySummaryCard(),
-            const SizedBox(height: 40),
-            // ✅ FILTER TABS WIRED CORRECTLY
-            TaskFilterTabs(
-              selected: selectedFilter,
-              onChanged: (filter) {
-                setState(() {
-                  selectedFilter = filter;
-                });
-              },
-            ),
-            const SizedBox(height: 40),
-            Expanded(
-              child: TaskList(
-                tasks: visibleTasks,
-                onTaskComplete: completeTask,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            /// HEADER
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: TaskHeader(),
               ),
+            ),
+
+            /// SUMMARY
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: TodaySummaryCard(),
+              ),
+            ),
+
+            /// FILTER TABS
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: TaskFilterTabs(
+                  selected: selectedFilter,
+                  onChanged: (filter) {
+                    setState(() {
+                      selectedFilter = filter;
+                    });
+                  },
+                ),
+              ),
+            ),
+
+            /// TASK LIST
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    final task = visibleTasks[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: TaskListItem(
+                        task: task,
+                        onComplete: () => completeTask(task),
+                      ),
+                    );
+                  },
+                  childCount: visibleTasks.length,
+                ),
+              ),
+            ),
+
+            /// BOTTOM SPACE (breathing room)
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 40),
             ),
           ],
         ),

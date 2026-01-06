@@ -24,11 +24,11 @@ class TaskFilterTabs extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onChanged(filter),
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                   color: isActive ? tAccentColorLight : tCardBgColor,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: Text(
                   _label(filter),

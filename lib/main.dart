@@ -2,43 +2,56 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:wind_main/firebase_options.dart';
-import 'package:wind_main/src/constants/colors.dart';
-import 'package:wind_main/src/features/authentication/screens/welcome/welcome_screen.dart';
-import 'package:wind_main/src/repository/authentication_repository/authentication_repository.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-// import 'package:wind_main/src/utils/theme/widget_themes/theme.dart';
-// import 'package:wind_main/src/features/authentication/screens/splash_screen/splash_screen.dart';
+import 'firebase_options.dart';
+import 'src/constants/colors.dart';
+import 'src/features/authentication/screens/welcome/welcome_screen.dart';
+import 'src/repository/authentication_repository/authentication_repository.dart';
+import 'src/features/authentication/models/task_model.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(
+
+  // 🔥 Firebase
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  ).then((value) => Get.put(AuthenticationRepository()));
+  );
+  Get.put(AuthenticationRepository());
+
+  // 🧠 Hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskAdapter());
+  await Hive.openBox<Task>('tasks');
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
+
     return GetMaterialApp(
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: tPrimaryColor,
+        scaffoldBackgroundColor: tPrimaryColor,
         appBarTheme: AppBarTheme(backgroundColor: tPrimaryColor),
       ),
-      darkTheme: ThemeData(brightness: Brightness.dark),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+      ),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.leftToRightWithFade,
       transitionDuration: const Duration(milliseconds: 500),
-      home: WelcomeScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }

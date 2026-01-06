@@ -1,13 +1,27 @@
+import 'package:hive/hive.dart';
 import '../../../utils/task_enum.dart';
 
-// task_model.dart
+part "task_model.g.dart";
 
-class Task {
+@HiveType(typeId: 0)
+class Task extends HiveObject {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String title;
+
+  @HiveField(2)
   final DateTime dueDate;
+
+  @HiveField(3)
   final TaskPriority priority;
+
+  @HiveField(4)
   bool isCompleted;
+
+  @HiveField(5)
+  DateTime? completedAt;
 
   Task({
     required this.id,
@@ -15,22 +29,6 @@ class Task {
     required this.dueDate,
     required this.priority,
     this.isCompleted = false,
+    this.completedAt,
   });
-
-  bool get isToday {
-    final now = DateTime.now();
-    return dueDate.year == now.year &&
-        dueDate.month == now.month &&
-        dueDate.day == now.day;
-  }
-
-  bool get isUpcoming {
-    final now = DateTime.now();
-    return dueDate.isAfter(now) && !isToday;
-  }
-
-  bool get isOverdue {
-    final now = DateTime.now();
-    return dueDate.isBefore(now) && !isToday && !isCompleted;
-  }
 }
