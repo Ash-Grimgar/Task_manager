@@ -9,6 +9,7 @@ import 'package:wind_main/src/features/authentication/screens/profile/update_pro
 
 import '../../../../constants/text-strings.dart';
 import '../../../../repository/authentication_repository/authentication_repository.dart';
+import '../application/home_screen_relations/task_history/history_screen.dart';
 import 'widgets/profile_menu_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -114,8 +115,12 @@ class ProfileScreen extends StatelessWidget {
                 icon: LineAwesomeIcons.user_check_solid,
               ),
               FileMenuWidget(
-                title: "Information",
-                OnPress: () {},
+                title: "History",
+                OnPress: () {Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const HistoryScreen()),
+                );
+                },
                 icon: LineAwesomeIcons.info_solid,
               ),
 

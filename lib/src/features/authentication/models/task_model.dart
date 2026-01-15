@@ -9,13 +9,13 @@ class Task extends HiveObject {
   final String id;
 
   @HiveField(1)
-  final String title;
+   String title;
 
   @HiveField(2)
   final DateTime dueDate;
 
   @HiveField(3)
-  final TaskPriority priority;
+   TaskPriority priority;
 
   @HiveField(4)
   bool isCompleted;
@@ -31,4 +31,20 @@ class Task extends HiveObject {
     this.isCompleted = false,
     this.completedAt,
   });
+
+  bool get isToday {
+    final now = DateTime.now();
+    return dueDate.year == now.year &&
+        dueDate.month == now.month &&
+        dueDate.day == now.day;
+  }
+
+  bool get isUpcoming {
+    return dueDate.isAfter(DateTime.now());
+  }
+
+  bool get isOverdue {
+    return dueDate.isBefore(DateTime.now());
+  }
+
 }
