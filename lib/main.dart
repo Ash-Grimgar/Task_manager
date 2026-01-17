@@ -9,20 +9,27 @@ import 'src/constants/colors.dart';
 import 'src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'src/repository/authentication_repository/authentication_repository.dart';
 import 'src/features/authentication/models/task_model.dart';
+import 'src/utils/task_enum.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 🧠 Hive INIT FIRST
+  await Hive.initFlutter();
+
+  // 🔐 Adapters (ALL of them)
+  Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(TaskPriorityAdapter());
+
+  // 📦 Open boxes BEFORE UI
+  await Hive.openBox<Task>('tasks');
 
   // 🔥 Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Get.put(AuthenticationRepository());
 
-  // 🧠 Hive
-  await Hive.initFlutter();
-  Hive.registerAdapter(TaskAdapter());
-  await Hive.openBox<Task>('tasks');
+  Get.put(AuthenticationRepository());
 
   runApp(const MyApp());
 }
@@ -37,20 +44,23 @@ class MyApp extends StatelessWidget {
     );
 
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      defaultTransition: Transition.leftToRightWithFade,
+      transitionDuration: const Duration(milliseconds: 500),
+
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: tPrimaryColor,
         scaffoldBackgroundColor: tPrimaryColor,
         appBarTheme: AppBarTheme(backgroundColor: tPrimaryColor),
       ),
+
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.black,
       ),
+
       themeMode: ThemeMode.system,
-      debugShowCheckedModeBanner: false,
-      defaultTransition: Transition.leftToRightWithFade,
-      transitionDuration: const Duration(milliseconds: 500),
       home: const WelcomeScreen(),
     );
   }
