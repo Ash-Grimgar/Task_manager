@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../models/task_model.dart';
-import '../../../../../../constants/colors.dart';
+import '../../../../../../utils/task_enum.dart';
 import 'edit_task_sheet.dart';
 
 class TaskListItem extends StatelessWidget {
@@ -12,6 +12,28 @@ class TaskListItem extends StatelessWidget {
     required this.task,
     required this.onComplete,
   });
+
+  Color _priorityColor(TaskPriority priority) {
+    switch (priority) {
+      case TaskPriority.low:
+        return Colors.green.withOpacity(0.15);
+      case TaskPriority.medium:
+        return Colors.orange.withOpacity(0.15);
+      case TaskPriority.high:
+        return Colors.red.withOpacity(0.15);
+    }
+  }
+
+  Color _priorityBorder(TaskPriority priority) {
+    switch (priority) {
+      case TaskPriority.low:
+        return Colors.green;
+      case TaskPriority.medium:
+        return Colors.orange;
+      case TaskPriority.high:
+        return Colors.red;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +50,11 @@ class TaskListItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: tCardBgColor,
+          color: _priorityColor(task.priority),
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: _priorityBorder(task.priority).withOpacity(0.6),
+          ),
         ),
         child: Row(
           children: [
@@ -41,7 +66,7 @@ class TaskListItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: tAccentColorLight,
+                    color: _priorityBorder(task.priority),
                     width: 2,
                   ),
                 ),

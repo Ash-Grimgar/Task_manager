@@ -16,7 +16,22 @@ class AddTaskSheet extends StatefulWidget {
 
 class _AddTaskSheetState extends State<AddTaskSheet> {
   final TextEditingController _titleController = TextEditingController();
+
   TaskPriority priority = TaskPriority.medium;
+  DateTime dueDate = DateTime.now();
+
+  Future<void> pickDueDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: dueDate,
+      firstDate: DateTime.now().subtract(const Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+    );
+
+    if (picked != null) {
+      setState(() => dueDate = picked);
+    }
+  }
 
   void createTask() {
     final title = _titleController.text.trim();
@@ -25,7 +40,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
     final task = Task(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: title,
-      dueDate: DateTime.now(),
+      dueDate: dueDate,
       priority: priority,
     );
 
@@ -70,11 +85,24 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               decoration: const InputDecoration(
                 hintText: 'Task title',
                 hintStyle: TextStyle(color: Colors.white54),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white24),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            /// DUE DATE PICKER
+            InkWell(
+              onTap: pickDueDate,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white24),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                child: Text(
+                  'Due: ${dueDate.toLocal().toString().split(' ')[0]}',
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),

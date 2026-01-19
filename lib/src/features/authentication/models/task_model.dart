@@ -12,7 +12,7 @@ class Task extends HiveObject {
    String title;
 
   @HiveField(2)
-  final DateTime dueDate;
+  DateTime dueDate;
 
   @HiveField(3)
    TaskPriority priority;

@@ -49,8 +49,11 @@ class _HomepageState extends State<Homepage> {
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
             builder: (_) => AddTaskSheet(
-              onTaskCreated: (_) {},
+              onTaskCreated: (task) {
+                taskBox.add(task);
+              }
             ),
+
           );
         },
       ),

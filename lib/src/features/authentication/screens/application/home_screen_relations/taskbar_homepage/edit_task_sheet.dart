@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../models/task_model.dart';
 import '../../../../../../utils/task_enum.dart';
 
@@ -16,14 +15,29 @@ class EditTaskSheet extends StatefulWidget {
 }
 
 class _EditTaskSheetState extends State<EditTaskSheet> {
-  late final TextEditingController _titleController;
+  late TextEditingController _titleController;
   late TaskPriority priority;
+  late DateTime dueDate;
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.task.title);
     priority = widget.task.priority;
+    dueDate = widget.task.dueDate;
+  }
+
+  Future<void> pickDueDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: dueDate,
+      firstDate: DateTime.now().subtract(const Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+    );
+
+    if (picked != null) {
+      setState(() => dueDate = picked);
+    }
   }
 
   void saveChanges() {
@@ -33,6 +47,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
     widget.task
       ..title = title
       ..priority = priority
+      ..dueDate = dueDate
       ..save();
 
     Navigator.pop(context);
@@ -75,11 +90,24 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
               decoration: const InputDecoration(
                 hintText: 'Task title',
                 hintStyle: TextStyle(color: Colors.white54),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white24),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            /// DUE DATE
+            InkWell(
+              onTap: pickDueDate,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white24),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                child: Text(
+                  'Due: ${dueDate.toLocal().toString().split(' ')[0]}',
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),
