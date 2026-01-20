@@ -16,7 +16,7 @@ const Color tAccentColorLight  = Color(0xFFFFD700); // royal bright gold
 const Color tAccentColorDark   = Color(0xFFF6C453); // warm rich gold
 
 // Card background for light theme
-const Color tCardBgColor       = Color(0xFFF8F5EC); // soft warm ivory
+const Color tCardBgColor       = Color(0xFF1E293B); // soft warm ivory
 
 // Soft white for general UI
 const Color tWhiteColor        = Color(0xFFFFFFFF);

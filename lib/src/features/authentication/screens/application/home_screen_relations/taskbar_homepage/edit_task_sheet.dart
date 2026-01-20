@@ -30,6 +30,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
   Future<void> pickDueDate() async {
     final picked = await showDatePicker(
       context: context,
+
       initialDate: dueDate,
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
       lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
@@ -58,6 +59,11 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
     _titleController.dispose();
     super.dispose();
   }
+  void deleteTask() {
+    widget.task.delete();
+    Navigator.pop(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -139,13 +145,28 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
 
             const SizedBox(height: 24),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: saveChanges,
-                child: const Text('Save Changes'),
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: deleteTask,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.redAccent,
+                      side: const BorderSide(color: Colors.redAccent),
+                    ),
+                    child: const Text('Delete'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: saveChanges,
+                    child: const Text('Save'),
+                  ),
+                ),
+              ],
             ),
+
           ],
         ),
       ),

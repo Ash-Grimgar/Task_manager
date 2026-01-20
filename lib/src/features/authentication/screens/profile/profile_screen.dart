@@ -5,6 +5,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:wind_main/src/constants/colors.dart';
 import 'package:wind_main/src/constants/image_strings.dart';
 import 'package:wind_main/src/constants/sizes.dart';
+import 'package:wind_main/src/features/authentication/screens/application/home_screen_relations/taskbar_homepage/homepage.dart';
 import 'package:wind_main/src/features/authentication/screens/profile/update_profile_screen.dart';
 
 import '../../../../constants/text-strings.dart';
@@ -21,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {Get.offAll(() => Homepage());},
           icon: const Icon(LineAwesomeIcons.angle_left_solid),
         ),
         title: Text(tProfile, style: Theme.of(context).textTheme.titleLarge),
@@ -104,16 +105,7 @@ class ProfileScreen extends StatelessWidget {
                 icon: LineAwesomeIcons.cog_solid,
                 OnPress: () {},
               ),
-              FileMenuWidget(
-                title: "Billing Details",
-                OnPress: () {},
-                icon: LineAwesomeIcons.wallet_solid,
-              ),
-              FileMenuWidget(
-                title: "User Management",
-                OnPress: () {},
-                icon: LineAwesomeIcons.user_check_solid,
-              ),
+
               FileMenuWidget(
                 title: "History",
                 OnPress: () {Navigator.push(

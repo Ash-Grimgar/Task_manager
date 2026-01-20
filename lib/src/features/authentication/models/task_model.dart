@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import '../../../utils/task_enum.dart';
 
-part "task_model.g.dart";
+part 'task_model.g.dart';
 
 @HiveType(typeId: 0)
 class Task extends HiveObject {
@@ -9,13 +9,13 @@ class Task extends HiveObject {
   final String id;
 
   @HiveField(1)
-   String title;
+  String title;
 
   @HiveField(2)
   DateTime dueDate;
 
   @HiveField(3)
-   TaskPriority priority;
+  TaskPriority priority;
 
   @HiveField(4)
   bool isCompleted;
@@ -32,19 +32,25 @@ class Task extends HiveObject {
     this.completedAt,
   });
 
-  bool get isToday {
+  // 🔹 Helpers to remove time from dates
+  DateTime get _dueDateOnly =>
+      DateTime(dueDate.year, dueDate.month, dueDate.day);
+
+  DateTime get _todayOnly {
     final now = DateTime.now();
-    return dueDate.year == now.year &&
-        dueDate.month == now.month &&
-        dueDate.day == now.day;
+    return DateTime(now.year, now.month, now.day);
+  }
+
+  // 🔹 Correct logic
+  bool get isToday {
+    return _dueDateOnly == _todayOnly;
   }
 
   bool get isUpcoming {
-    return dueDate.isAfter(DateTime.now());
+    return _dueDateOnly.isAfter(_todayOnly);
   }
 
   bool get isOverdue {
-    return dueDate.isBefore(DateTime.now());
+    return _dueDateOnly.isBefore(_todayOnly);
   }
-
 }

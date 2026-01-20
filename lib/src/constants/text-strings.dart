@@ -90,8 +90,8 @@ const String tOtpMessage = "Enter the verification code sent at";
 const String tProfile = "Profile";
 const String tEditProfile = "Edit Profile";
 const String tLogout = "Logout";
-const String tProfileHeading = "Coding with";
-const String tProfileSubHeading = "George";
+const String tProfileHeading = "The only way";
+const String tProfileSubHeading = "to plan your day";
 
 // Menu
 const String tMenu5 = tLogout;

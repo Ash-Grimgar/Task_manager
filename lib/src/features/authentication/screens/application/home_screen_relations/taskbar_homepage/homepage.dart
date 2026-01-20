@@ -51,116 +51,109 @@ class _HomepageState extends State<Homepage> {
             builder: (_) => AddTaskSheet(
               onTaskCreated: (task) {
                 taskBox.add(task);
-              }
+              },
             ),
-
           );
         },
       ),
 
       body: SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            /// HEADER
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: TaskHeader(),
-              ),
-            ),
+        child: ValueListenableBuilder(
+          valueListenable: taskBox.listenable(),
+          builder: (context, Box<Task> box, _) {
+            final tasks = box.values.toList();
 
-            /// SUMMARY
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: TodaySummaryCard(),
-              ),
-            ),
+            // ✅ FIX: logic lives where tasks exist
+            final todayTasks = tasks.where((t) => t.isToday).toList();
+            final completedToday = todayTasks
+                .where((t) => t.isCompleted)
+                .length;
 
-            /// FILTER TABS
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: TaskFilterTabs(
-                  selected: selectedFilter,
-                  onChanged: (filter) {
-                    setState(() => selectedFilter = filter);
-                  },
+            final visibleTasks = tasks.where((task) {
+              if (task.isCompleted) return false;
+
+              switch (selectedFilter) {
+                case TaskFilter.today:
+                  return task.isToday;
+                case TaskFilter.upcoming:
+                  return task.isUpcoming;
+                case TaskFilter.overdue:
+                  return task.isOverdue;
+              }
+            }).toList();
+
+            return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                /// HEADER
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: TaskHeader(),
+                  ),
                 ),
-              ),
-            ),
 
-            /// TASK LIST
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              sliver: ValueListenableBuilder(
-                valueListenable: taskBox.listenable(),
-                builder: (context, Box<Task> box, _) {
-                  final tasks = box.values.toList();
+                /// SUMMARY
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32),
+                    child: TodaySummaryCard(
+                      total: todayTasks.length,
+                      completed: completedToday,
+                    ),
+                  ),
+                ),
 
-                  final visibleTasks = tasks.where((task) {
-                    if (task.isCompleted) return false;
+                /// FILTER TABS
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: TaskFilterTabs(
+                      selected: selectedFilter,
+                      onChanged: (filter) {
+                        setState(() => selectedFilter = filter);
+                      },
+                    ),
+                  ),
+                ),
 
-                    switch (selectedFilter) {
-                      case TaskFilter.today:
-                        return task.isToday;
-                      case TaskFilter.upcoming:
-                        return task.isUpcoming;
-                      case TaskFilter.overdue:
-                        return task.isOverdue;
-                    }
-                  }).toList();
-
-                  if (visibleTasks.isEmpty) {
-                    return const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 40),
-                        child: Center(
-                          child: Text(
-                            'No tasks yet',
-                            style: TextStyle(color: Colors.white54),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                        final task = visibleTasks[index];
-
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(16),
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (_) => EditTaskSheet(task: task),
-                              );
-                            },
-                            child: TaskListItem(
-                              task: task,
-                              onComplete: () => completeTask(task),
+                /// TASK LIST
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  sliver: visibleTasks.isEmpty
+                      ? const SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 40),
+                            child: Center(
+                              child: Text(
+                                'No tasks yet',
+                                style: TextStyle(color: Colors.white54),
+                              ),
                             ),
                           ),
-                        );
-                      },
-                      childCount: visibleTasks.length,
-                    ),
-                  );
-                },
-              ),
-            ),
+                        )
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final task = visibleTasks[index];
 
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 40),
-            ),
-          ],
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: TaskListItem(
+                                task: task,
+                                onComplete: () => completeTask(task),
+                              ),
+                            );
+                          }, childCount: visibleTasks.length),
+                        ),
+                ),
+
+                const SliverToBoxAdapter(child: SizedBox(height: 40)),
+              ],
+            );
+          },
         ),
       ),
     );

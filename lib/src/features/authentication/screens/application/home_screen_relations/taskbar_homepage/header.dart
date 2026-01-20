@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:wind_main/src/constants/image_strings.dart';
+import 'package:wind_main/src/features/authentication/screens/profile/profile_screen.dart';
 
 class TaskHeader extends StatelessWidget {
   const TaskHeader({super.key});
@@ -6,12 +10,16 @@ class TaskHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spa,
+
       children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundImage: NetworkImage(
-            'https://i.pravatar.cc/150?img=3',
+        Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: GestureDetector(
+            onTap: (){Get.to(() => ProfileScreen());},
+            child: CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(tProfileImage)
+            ),
           ),
         ),
         Padding(padding: EdgeInsets.only(left: 20),
@@ -19,13 +27,13 @@ class TaskHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               Text(
-                'Good morning 👋',
+                'Hey George',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 4),
+              SizedBox(height: 1),
               Text(
                 'Let’s plan your day',
                 style: TextStyle(
